@@ -69,6 +69,7 @@ func InitRouter(db *sql.DB, r *gin.Engine) *Server {
 func (server *Server) InitializeRouter() {
 	r := server.Router.Group("api/v1")
 	controllers.NewBookController(server.DB, r)
+	controllers.NewCategoryController(server.DB, r)
 }
 
 func Run(r *gin.Engine) {
