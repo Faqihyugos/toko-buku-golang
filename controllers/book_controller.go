@@ -19,8 +19,8 @@ type bookController struct {
 
 const (
 	BOOK_LIST_PATH      = "/book/list"
-	BOOK_CREATE_PATH    = "/book"
-	BOOK_GET_BY_ID_PATH = "/book:id"
+	BOOK_CREATE_PATH    = "/book/add"
+	BOOK_GET_BY_ID_PATH = "/book/:id"
 	BOOK_UPDATE_PATH    = "/book/:id"
 	BOOK_DELETE_PATH    = "/book/:id"
 	ADD_STOCK_BOOK_PATH = "/book/:id/stock"
@@ -44,20 +44,22 @@ func (b *bookController) lstBook(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "Ok", "data": books})
+	c.JSON(http.StatusOK, utils.Response(http.StatusOK, "All Get Data Success", books))
 }
 
 func (b *bookController) AddBook(c *gin.Context) {
 	var book domain.Book
 	err := c.ShouldBindJSON(&book)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, utils.NewUnprocessibleEntityError("invalid json body"))
+		theErr := utils.NewUnprocessibleEntityError("invalid json body")
+		c.JSON(theErr.Status(), theErr)
 		return
 	}
 
 	newBook, errCreate := b.BookService.CreateBook(&book)
 	if errCreate != nil {
-		c.JSON(http.StatusInternalServerError, utils.NewInternalServerError("Internal Server Error"))
+		c.JSON(http.StatusInternalServerError, utils.NewInternalServerError(errCreate.Error()))
+		return
 	}
 	c.JSON(http.StatusCreated, utils.Response(http.StatusCreated, "Book create successfully", newBook))
 }
@@ -79,18 +81,26 @@ func (b *bookController) GetBookById(c *gin.Context) {
 }
 
 func (b *bookController) addStockBook(c *gin.Context) {
-	var book domain.Book
-	err := c.ShouldBindJSON(&book)
+	param := c.Param("id")
+	id, err := strconv.Atoi(param)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, utils.NewUnprocessibleEntityError("invalid json body"))
+		log.Println("Failed to converted to int")
+		c.JSON(http.StatusInternalServerError, utils.NewInternalServerError("Internal Server Error"))
+	}
+	var stock domain.Book
+	errBind := c.ShouldBindJSON(&stock)
+	if errBind != nil {
+		theErr := utils.NewUnprocessibleEntityError("invalid json body")
+		c.JSON(theErr.Status(), theErr)
 		return
 	}
 
-	newBook, errCreate := b.BookService.CreateBook(&book)
-	if errCreate != nil {
-		c.JSON(http.StatusInternalServerError, utils.NewInternalServerError("Internal server error"))
+	errStock := b.BookService.AddStock(stock.Stock, id)
+	if errStock != nil {
+		c.JSON(http.StatusInternalServerError, utils.NewInternalServerError("Internal Server Error"))
+	} else {
+		c.JSON(http.StatusOK, gin.H{"code": 200, "message": "Add stock book successfully"})
 	}
-	c.JSON(http.StatusCreated, utils.Response(http.StatusCreated, "Book created succesfully", newBook))
 }
 
 func (b *bookController) UpdateBook(c *gin.Context) {

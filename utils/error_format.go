@@ -15,7 +15,12 @@ func ParserError(err error) MessageErr {
 	}
 	switch sqlErr.Number {
 	case 1062:
+		fmt.Println("masuk 1")
 		return NewInternalServerError("title already taken")
+	case 1064:
+		fmt.Println("masuk")
+		return NewInternalServerError("Internal Server Error")
 	}
 	return NewInternalServerError(fmt.Sprintf("error when processing request: %s", err.Error()))
+
 }

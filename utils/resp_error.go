@@ -2,7 +2,9 @@ package utils
 
 import (
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 type ResponseMessage struct {
@@ -17,10 +19,20 @@ type MessageErr interface {
 	Error() string
 }
 
+type Responses struct {
+	Status  int
+	Message []string
+	Error   []string
+}
+
 type messageErr struct {
 	ErrMessage string `json:"message"`
 	ErrStatus  int    `json:"status"`
 	ErrError   string `json:"error"`
+}
+
+type error interface {
+	Error() string
 }
 
 func (e *messageErr) Error() string {
@@ -50,6 +62,14 @@ func NewBadRequestError(message string) MessageErr {
 	}
 }
 
+func NewUnauthorizedtError(message string) MessageErr {
+	return &messageErr{
+		ErrMessage: message,
+		ErrStatus:  http.StatusUnauthorized,
+		ErrError:   "Unauthorized",
+	}
+}
+
 func NewUnprocessibleEntityError(message string) MessageErr {
 	return &messageErr{
 		ErrMessage: message,
@@ -76,4 +96,12 @@ func NewInternalServerError(message string) MessageErr {
 
 func Response(code int, message string, data interface{}) ResponseMessage {
 	return ResponseMessage{Status: code, Message: message, Data: data}
+}
+
+func SendResponse(c *gin.Context, response Responses) {
+	if len(response.Message) > 0 {
+		c.JSON(response.Status, map[string]interface{}{"message": strings.Join(response.Message, "; ")})
+	} else if len(response.Error) > 0 {
+		c.JSON(response.Status, map[string]interface{}{"error": strings.Join(response.Error, "; ")})
+	}
 }
