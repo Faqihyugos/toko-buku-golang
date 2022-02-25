@@ -76,3 +76,55 @@ func (c *bookRepo) Create(book *domain.Book) (*domain.Book, error) {
 
 	return book, nil
 }
+
+func (c bookRepo) FindById(id int) (*domain.Book, error) {
+	book := new(domain.Book)
+
+	query := fmt.Sprintf(`SELECT id, title, description, year, pages,language, publisher, price, stock FROM book WHERE id=?`)
+	if getError := c.db.QueryRow(query, id).
+		Scan(&book.Id, &book.Title, &book.Description, &book.Year, &book.Pages,
+			&book.Language, &book.Publisher, &book.Price, &book.Stock); getError != nil {
+		fmt.Println("this is the error man: ", getError)
+		return nil, getError
+	}
+	return book, nil
+}
+
+func (c bookRepo) Update(book *domain.Book) (*domain.Book, error) {
+	query := fmt.Sprintf("UPDATE book SET title = ?, description = ?, year = ?, pages = ?, language = ?, publisher = ?, price = ?, stock = ? WHERE id = ?")
+	_, updateErr := c.db.Exec(query, &book.Title, &book.Description, &book.Year, &book.Pages,
+		&book.Language, &book.Publisher, &book.Price, &book.Stock, &book.Id)
+	if updateErr != nil {
+		s := strings.Split(updateErr.Error(), ":")
+		log.Println(s[1])
+		if updateErr != nil {
+			return nil, updateErr
+		}
+	}
+
+	return book, nil
+}
+
+func (c bookRepo) Delete(id int) (int64, error) {
+	query := fmt.Sprintf("DELETE FROM book WHERE id = ?")
+	result, err := c.db.Exec(query, id)
+	if err != nil {
+		return 0, err
+	}
+	RowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return RowsAffected, nil
+}
+
+func (c bookRepo) UpdateStock(stock, id int) error {
+	query := fmt.Sprintf("UPDATE book SET stock = ? WHERE id = ?")
+	_, updateErr := c.db.Exec(query, stock, id)
+	if updateErr != nil {
+		//s := strings.Split(updateErr.Error(), ":")
+		//log.Println(s[1])
+		return updateErr
+	}
+	return nil
+}
