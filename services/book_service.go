@@ -92,3 +92,9 @@ func (b bookService) DeleteBook(id int) (int64, error) {
 	}
 	return result, nil
 }
+
+//func (b *bookService) ReduceStock(book *domain.Book, qtyBuy *domain.ReqBuy, id int) *domain.Book{
+//	book.Stock = book.Stock - qtyBuy.Qty
+//	newBook,_ := b.BookRepo.UpdateStock(book.Stock)
+//	return newBook
+//}
