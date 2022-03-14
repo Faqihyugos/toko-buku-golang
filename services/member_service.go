@@ -46,6 +46,10 @@ func (m *memberService) Buys(buys []domain.Buy, memberId int) ([]domain.Purchase
 	var purchases []domain.Purchase
 
 	for _, buy := range buys {
+		member, _ := m.MemberRepo.FindMemberById(memberId)
+		if member.Status == 0 {
+			return nil, utils.NewUnauthorizedtError("Please contact admin for activation")
+		}
 		book, _ := m.BookService.FindBookById(buy.BookID)
 		if book.Stock < 1 || buy.Qty > book.Stock {
 			return nil, utils.NewBadRequestError("Insufficient stock available book " + book.Title)

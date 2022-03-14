@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "e80830c8-2b20-4140-82d0-cc1d99bf80f2",
+		"name": "Toko-buku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Book",
+			"item": [
+				{
+					"name": "All book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8801/api/v1/book/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"book",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8801/api/v1/book/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"book",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Atomic Habbits\",\r\n    \"description\": \"buku inspirasi untuk melakukan habit yang positif\",\r\n    \"year\": 2010,\r\n    \"pages\": 100,\r\n    \"language\": \"Indonesia\",\r\n    \"publisher\": \"PT Gramedia\",\r\n    \"price\": 100000,\r\n    \"stock\" : 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/book/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"book",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8801/api/v1/book/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"book",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Stock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stock\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/book/4/stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"book",
+								"4",
+								"stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Atomic Habbits\",\r\n    \"description\": \"buku inspirasi untuk melakukan habit yang positif\",\r\n    \"year\": 2010,\r\n    \"pages\": 100,\r\n    \"language\": \"Indonesia\",\r\n    \"publisher\": \"PT Gramedia\",\r\n    \"price\": 120000,\r\n    \"stock\" : 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/book/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"book",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Member",
+			"item": [
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\" : \"ridwan\",\r\n    \"last_name\" : \"maulana\",\r\n    \"email\" : \"ridwan@gmail.com\",\r\n    \"password\" : \"1234ridwan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/member/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"member",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"email\" : \"ridwan@gmail.com\",\r\n    \"password\" : \"1234ridwan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/member/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"member",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active Member",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/member/activated/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"member",
+								"activated",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "HIstory Buy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8801/api/v1/member/history/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"member",
+								"history",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy books",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"buys\" : [\r\n        {\r\n            \"bookId\" : 1,\r\n            \"qty\" : 1\r\n        },\r\n        {\r\n            \"bookId\" : 4,\r\n            \"qty\" : 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8801/api/v1/member/book/buys/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8801",
+							"path": [
+								"api",
+								"v1",
+								"member",
+								"book",
+								"buys",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

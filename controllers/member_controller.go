@@ -27,7 +27,7 @@ func NewMemberController(db *sql.DB, r *gin.RouterGroup) {
 	Controller := memberController{MemberService: services.NewMemberService(db)}
 	r.POST(SIGN_UP_PATH, Controller.SignUpMember)
 	r.POST(SIGN_IN_PATH, Controller.SignInMember)
-	r.PUT(BUYS_BOOK_PATH, Controller.Buys)
+	r.POST(BUYS_BOOK_PATH, Controller.Buys)
 	r.GET(GET_HISTORY_PATH, Controller.HistoryTrx)
 	r.PUT(ACTIVATED_PATH, Controller.ActivatedMember)
 }
@@ -43,6 +43,7 @@ func (m *memberController) HistoryTrx(c *gin.Context) {
 	histories, errget := m.MemberService.GetHistoryTrxMember(id)
 	if errget != nil {
 		c.JSON(http.StatusInternalServerError, utils.NewInternalServerError("Internal server error"))
+		return
 	}
 	c.JSON(http.StatusOK, utils.Response(http.StatusOK, "Success", histories))
 }

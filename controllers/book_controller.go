@@ -122,7 +122,7 @@ func (b *bookController) UpdateBook(c *gin.Context) {
 		log.Println(error)
 		c.JSON(http.StatusInternalServerError, gin.H{"code": 500, "message": "Internal Server Error"})
 	}
-	c.JSON(http.StatusOK, utils.Response(http.StatusCreated, "Category updated successfully", newBook))
+	c.JSON(http.StatusOK, utils.Response(http.StatusOK, "Book updated successfully", newBook))
 }
 
 func (b *bookController) DeleteBook(c *gin.Context) {

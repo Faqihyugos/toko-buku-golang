@@ -62,7 +62,7 @@ func (m *memberRepo) UpdateStatus(member *domain.Member, status int) utils.Messa
 	//if err != nil {
 	//	return utils.ParseError(err)
 	//}
-	query := fmt.Sprintf("UPDATE members SET status = ? WHERE email = ?")
+	query := fmt.Sprintf("UPDATE members SET Status = ? WHERE Email = ?")
 	_, updateErr := m.db.Exec(query, &status, &member.Email)
 	if updateErr != nil {
 		s := strings.Split(updateErr.Error(), ":")
@@ -76,7 +76,7 @@ func (m *memberRepo) UpdateStatus(member *domain.Member, status int) utils.Messa
 }
 
 func (m *memberRepo) FindHistoryByMember(memberId int) ([]*domain.ResponseHistoryMember, utils.MessageErr) {
-	query := fmt.Sprintf(`select first_name, title, price, Quantity, TotalPrice FROM MemberhasBooks as mhb 
+	query := fmt.Sprintf(`select First_name, Title, Price, Quantity, TotalPrice FROM MemberhasBooks as mhb 
 			JOIN book as b on mhb.BookID = b.Id 
 			JOIN members as m on mhb.MemberID = m.Id WHERE m.Id = ?;`)
 	rows, err := m.db.Query(query, memberId)
@@ -110,7 +110,6 @@ func (m *memberRepo) AddBooks(purchases []domain.Purchase, memberId int) ([]doma
 	}
 	query := fmt.Sprintf(`INSERT INTO MemberhasBooks(MemberID, BookID, Quantity, TotalPrice) VALUES(?,?,?,?)`)
 	for _, purchase := range purchases {
-		//fmt.Println("member id : ", memberId, "Book id :", purchase.Book.Id, purchase.Qty, purchase.TotalPrice)
 		result, err := m.db.Exec(query, memberId, purchase.Book.Id, purchase.Qty, purchase.TotalPrice)
 		if err != nil {
 			s := strings.Split(err.Error(), ":")
