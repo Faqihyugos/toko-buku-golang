@@ -1,5 +1,15 @@
 # Dokumentasi API Toko Buku
 
+
+API ini menggunakan framework gin gonic.
+Jika Anda meng-clone repo ini jalan kan perintah :
+
+`go mod tidy`
+
+untuk menjalankan API gunakan perintah :
+
+`go run main.go`
+
 ## API dapat menyimpan buku
 API dapat menyimpan buku melalui rute :
 - Method : POST
