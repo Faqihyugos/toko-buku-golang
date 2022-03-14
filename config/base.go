@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"os"
 	"toko/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -19,13 +20,24 @@ type Server struct {
 	Router *gin.Engine
 }
 
+func GetEnvWithKey(key string) string {
+	return os.Getenv(key)
+}
+
 func ConnectDB() (*sql.DB, error) {
+	get := GetEnvWithKey
+	DB_USER := get("DB_USER")
+	DB_PASS := get("DB_PASS")
+	DB_HOST := get("DB_HOST")
+	DB_NAME := get("DB_NAME")
+	DB_PORT := get("DB_PORT")
+	DB_LOC := get("DB_LOC")
 	// membuat variable yang berisi format untuk koneksi dan database
-	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", "root", "Secret", "127.0.0.1", "3306", "enigma_toko")
+	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
 	// Instance sebuah object dari sebuah struct Value yang bertipe data map[string]interface{}
 	val := url.Values{}
 	// Menambahkan sebuah location dan menentukan Asia/Jakarta
-	val.Add("loc", "Asia/Jakarta")
+	val.Add("loc", DB_LOC)
 	// Membuat variable yang berisikan hasil penggabungan variable connection dengan value location
 	// Fungsi Encode untuk merubah menjadi sebuah string
 	dsn := fmt.Sprintf("%s?%s", connection, val.Encode())
